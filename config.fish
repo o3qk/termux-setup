@@ -51,3 +51,7 @@ function fish_right_prompt; end
 # Ctrl+R: 履歴検索 / Ctrl+F: ファイル検索
 # （PatrickF1/fzf.fish インストール後に自動適用）
 
+
+# ─── AI 連携エイリアス ──────────────────────────────
+alias g='gemini'
+alias llm='~/llama.cpp/build/bin/llama-cli'

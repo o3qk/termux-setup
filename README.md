@@ -169,6 +169,56 @@ termux-reload-settings
 
 ---
 
+## 🤖 AI & LLM 連携 (GeminiCLI + MCP + llama.cpp)
+
+Nothing Phone 3a (Snapdragon 7s Gen 3) のパワーを最大限に活かす AI 開発環境の構築方法です。
+
+### 1. GeminiCLI & MCP サーバーのセットアップ
+
+モバイル環境（Termux）では `npx` の遅延を避けるため、**グローバルインストール** を推奨します。
+
+#### 💻 A: 拡張機能とサーバーのインストール
+```bash
+# GeminiCLI の拡張機能 (Code-Review)
+gemini extensions install https://github.com/gemini-cli-extensions/code-review
+
+# MCP サーバーをグローバルインストール (爆速化のため)
+npm install -g @obra/superpowers @modelcontextprotocol/server-filesystem @modelcontextprotocol/server-system-info @modelcontextprotocol/server-sequential-thinking
+```
+
+#### 💻 B: `~/.gemini/settings.json` の設定
+インストール後、設定ファイルに以下を記述してください（`command` に `npx` を使わず直接指定するのがコツです）。
+
+```json
+{
+  "mcpServers": {
+    "superpowers": { "command": "superpowers" },
+    "filesystem": { "command": "mcp-server-filesystem", "args": ["/data/data/com.termux/files/home/projects"] },
+    "system-info": { "command": "mcp-server-system-info" },
+    "sequential-thinking": { "command": "mcp-server-sequential-thinking" }
+  }
+}
+```
+
+### 2. ローカル LLM (llama.cpp) の導入
+
+軽量な日本語 LLM (GGUF 形式) を Termux 上で直接動かします。
+
+#### 💻 ビルドとモデルの取得
+```bash
+# 必要なツールのインストール
+pkg install clang cmake ninja
+
+# llama.cpp のクローンとビルド
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp && cmake -B build -G Ninja && cmake --build build --config Release
+
+# モデルのダウンロード例 (例: Swallow-7b 等の軽量版)
+# ~/models/ 配下などに .gguf ファイルを配置してください
+```
+
+---
+
 ## 🔧 カスタマイズ
 
 設定ファイルは `~/.config/fish/config.fish` です。  
